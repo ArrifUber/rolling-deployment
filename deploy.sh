@@ -2,7 +2,7 @@
 
 set -e
 
-IMAGE="${DOCKER_USERNAME}/canary:${TAG}"
+IMAGE="${DOCKER_USERNAME}/${DOCKER_REPO}:${TAG}"
 echo "set image var: $IMAGE"
 
 
@@ -27,10 +27,13 @@ for ((i = 0 ; i < $running_container ; i++ )); do
     sleep 5
     echo "Delete container with id: $container_delete"
     sudo docker stop $container_delete
-    suod docker rm $container_delete
+    sudo docker rm $container_delete
     echo "Wait 5s.."
     sleep 5
     echo "running step $i done"
 done
+
+echo "Delete unused image..."
+sudo docker image prune -a -f
 
 echo "Running Complete ✅"

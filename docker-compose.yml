@@ -1,9 +1,6 @@
 services:
   app_rolling:
-    # image: arifbudianto/canary:latest
-    build:
-      context: ./app
-      dockerfile: ./Dockerfile
+    image: arifbudianto/canary:latest
     deploy:
       replicas: 3
     ports:
