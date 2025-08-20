@@ -1,0 +1,19 @@
+services:
+  app_rolling:
+    # image: arifbudianto/canary:latest
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 3
+    ports:
+      - 5000
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - app_rolling
