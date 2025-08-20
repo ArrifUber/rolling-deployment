@@ -9,6 +9,9 @@ echo "set image var: $IMAGE"
 echo "Set new image to docker compose file"
 sudo sed -i "/app_rolling:/,/image:/ s|image: .*|image: ${IMAGE}|" docker-compose.yml
 
+echo "Run docker compose"
+sudo docker compose up -d --no-recreate
+
 echo "Get number of running container"
 running_container=$(docker ps -q --filter "name=app_rolling" | wc -l)
 
