@@ -26,13 +26,13 @@ for ((i = 0 ; i < $running_container ; i++ )); do
     echo "scale up replica"
     sudo docker compose up -d --scale app_rolling=4 --no-recreate
 
-    echo "wait 5s..."
-    sleep 5
+    echo "wait 3s..."
+    sleep 3
     echo "Delete container with id: $container_delete"
     sudo docker stop $container_delete
     sudo docker rm $container_delete
-    echo "Wait 5s.."
-    sleep 5
+    echo "Wait 3s.."
+    sleep 3
     echo "running step $i done"
 done
 
