@@ -1,10 +1,9 @@
 # app.py
 from flask import Flask, request, jsonify
-import time
-from datetime import datetime
+
 app = Flask(__name__)
 
-APP_VERSION = "1.0.3"
+APP_VERSION = "1.0.4"
 
 @app.route("/health")
 def health():
