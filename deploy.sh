@@ -42,6 +42,7 @@ for ((i = 0 ; i < $running_container ; i++ )); do
         echo "Update docker-compose.yml with previously image"
         sudo sed -i "/app_rolling:/,/image:/ s|image: .*|image: ${PREV_IMAGE}|" docker-compose.yml
 
+        echo "Remove the new container..."
         sudo docker rm $(sudo docker stop $(sudo docker ps --filter "ancestor=$IMAGE" --format "{{.ID}}"))
 
         sudo docker compose up -d --scale app_rolling=$running_container --no-recreate

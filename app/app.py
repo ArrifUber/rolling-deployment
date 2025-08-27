@@ -7,7 +7,7 @@ APP_VERSION = "1.0.5"
 
 @app.route("/health")
 def health():
-    return jsonify(status="ok"), 500       
+    return jsonify(status="ok"), 200     
 
 @app.route("/")
 def home():
