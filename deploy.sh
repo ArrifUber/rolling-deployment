@@ -52,7 +52,7 @@ for ((i = 0 ; i < $running_container ; i++ )); do
     fi
     
     echo "✅ New Container healty. removing the old one..."
-    sudo docker stop $container_replace
+    sudo docker stop -t 10 $container_replace
     sudo docker rm $container_replace
 done
 
