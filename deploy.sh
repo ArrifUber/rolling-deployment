@@ -3,7 +3,9 @@
 set -e
 
 IMAGE="${DOCKER_USERNAME}/${DOCKER_REPO}:${TAG}"
+PREV_IMAGE=$(sudo docker ps --filter "name=app_rolling" --format "{{.Image}}" | head -1)
 echo "set image var: $IMAGE"
+echo "set previously image var: $IMAGE"
 
 
 echo "Update docker-compose.yml with new image"
@@ -11,7 +13,7 @@ sudo sed -i "/app_rolling:/,/image:/ s|image: .*|image: ${IMAGE}|" docker-compos
 
 
 echo "Get number of running container"
-running_container=$(docker ps -q --filter "name=app_rolling" | wc -l)
+running_container=$(sudo docker ps -q --filter "name=app_rolling" | wc -l)
 
 echo "Total running container is $running_container"
 
@@ -35,9 +37,16 @@ for ((i = 0 ; i < $running_container ; i++ )); do
     done
 
     if [ $retries -eq 0 ]; then
-        echo "❌ New container failed health check. Rollback!"
-        sudo docker stop $new_container
-        sudo docker rm $new_container
+        echo "❌ New container failed health check at step $((i+1))"
+        echo "Running Rollback..."
+        echo "Update docker-compose.yml with previously image"
+        sudo sed -i "/app_rolling:/,/image:/ s|image: .*|image: ${PREV_IMAGE}|" docker-compose.yml
+
+        sudo docker rm $(sudo docker stop $(sudo docker ps --filter "ancestor=$IMAGE" --format "{{.ID}}"))
+
+        sudo docker compose up -d --scale app_rolling=$running_container --no-recreate
+
+        echo "✅ Rollback Complete"
         exit 1
     fi
     
@@ -45,9 +54,6 @@ for ((i = 0 ; i < $running_container ; i++ )); do
     sudo docker stop $container_replace
     sudo docker rm $container_replace
 done
-
-# echo "Run docker compose"
-# sudo docker compose up -d --no-recreate
 
 echo "Delete unused image..."
 sudo docker image prune -a -f
