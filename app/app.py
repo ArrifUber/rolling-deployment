@@ -3,11 +3,11 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-APP_VERSION = "1.0.6"
+APP_VERSION = "1.0.7"
 
 @app.route("/health")
 def health():
-    return jsonify(status="ok"), 200     
+    return jsonify(status="ok"), 500     
 
 @app.route("/")
 def home():

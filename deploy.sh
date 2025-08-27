@@ -5,7 +5,7 @@ set -e
 IMAGE="${DOCKER_USERNAME}/${DOCKER_REPO}:${TAG}"
 PREV_IMAGE=$(sudo docker ps --filter "name=app_rolling" --format "{{.Image}}" | head -1)
 echo "set image var: $IMAGE"
-echo "set previously image var: $IMAGE"
+echo "set previously image var: $PREV_IMAGE"
 
 
 echo "Update docker-compose.yml with new image"
@@ -29,7 +29,7 @@ for ((i = 0 ; i < $running_container ; i++ )); do
 
     echo "Waiting for new container healthy..."
     new_container=$(sudo docker ps --filter "name=app_rolling" --format {{.ID}} | head -n 1)
-    retries=5
+    retries=10
     until sudo docker exec $new_container curl -fs http://localhost:5000/health || [ $retries -eq 0 ]; do
         echo "Wait new container $new_container healty..."
         sleep 3
