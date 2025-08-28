@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-APP_VERSION = "1.1.6"
+APP_VERSION = "1.1.7"
 
 @app.route("/health")
 def health():
@@ -27,9 +27,10 @@ def login():
 def order():
     data = request.get_json()
     token = request.headers.get("Authorization")
-    orderData = data.get("order")
+    ordersData = data.get("order")
+
     if token == "12345678":
-        return jsonify({"message": "Succes post order", "order": orderData})
+        return jsonify({"message": "Succes post order", "order": ordersData})
     return jsonify({"message": "invalid token"}), 401
 
 if __name__ == "__main__":
