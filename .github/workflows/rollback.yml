@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       previousVersion:
-        description: "input the previous version to rollback"
+        description: input the previous version to rollback
         required: true
 
 env:
@@ -41,4 +41,4 @@ jobs:
             cd rolling/
             echo "Running Rollback Script"
             chmod +x deploy.sh
-            sudo DOCKER_USERNAME=${{ env.DOCKER_USERNAME }} TAG=${{ github.event.inputs previousVersion }} DOCKER_REPO=${{env.DOCKER_REPO}} ./deploy.sh
+            sudo DOCKER_USERNAME=${{ env.DOCKER_USERNAME }} TAG=${{ github.event.inputs.previousVersion }} DOCKER_REPO=${{env.DOCKER_REPO}} ./deploy.sh
