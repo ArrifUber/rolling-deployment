@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.2.1"
 
 @app.route("/health")
 def health():
