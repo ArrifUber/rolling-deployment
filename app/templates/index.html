@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolling Coffee</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">☕ Rolling Coffee</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/health">Health</a>
+      <a href="/login">Login</a>
+      <a href="/order">Order</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Welcome to Rolling Coffee</h1>
+      <p>Version {{ version }}</p>
+      <a class="btn" href="/health">Check Health</a>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>About Us</h2>
+    <p>
+      At Rolling Coffee, we believe every line of code deserves a great cup of coffee.  
+      Freshly brewed, perfectly roasted – just like our app updates.
+    </p>
+  </section>
+
+  <footer>
+    <p>© 2025 Rolling Coffee. All rights reserved.</p>
+  </footer>
+</body>
+</html>

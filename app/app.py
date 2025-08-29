@@ -1,9 +1,9 @@
 # app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-APP_VERSION = "1.1.8"
+APP_VERSION = "1.1.9"
 
 @app.route("/health")
 def health():
@@ -11,7 +11,7 @@ def health():
 
 @app.route("/")
 def home():
-    return f"Hello from Rolling App! Version: {APP_VERSION}"
+    return render_template("index.html", version=APP_VERSION)
 
 @app.route("/login", methods=["POST"])
 def login():
