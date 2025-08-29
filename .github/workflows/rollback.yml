@@ -1,0 +1,44 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      previousVersion:
+        description: "input the previous version to rollback"
+        required: true
+
+env:
+  SSH_HOST: ${{  secrets.SSH_HOST  }}
+  SSH_USERNAME: ${{secrets.SSH_USERNAME}}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_REPO: ${{secrets.DOCKER_REPO}}
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+  
+      - name: Copy script via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{env.SSH_PRIVATE_KEY}}
+          source: "deploy.sh"
+          target: rolling/
+
+      - name: Running rollback script 
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{env.SSH_PRIVATE_KEY}}
+          script: |
+            cd rolling/
+            echo "Running Rollback Script"
+            chmod +x deploy.sh
+            sudo DOCKER_USERNAME=${{ env.DOCKER_USERNAME }} TAG=${{ github.event.inputs previousVersion }} DOCKER_REPO=${{env.DOCKER_REPO}} ./deploy.sh

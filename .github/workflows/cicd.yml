@@ -46,7 +46,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Copy files via SSH
+      - name: Copy deploy script via SSH
         uses: appleboy/scp-action@v1
         with:
           host: ${{ env.SSH_HOST }}

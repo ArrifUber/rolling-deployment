@@ -1,10 +1,11 @@
 services:
   app_rolling:
-    build:
-      context: ./app
-      dockerfile: ./Dockerfile
+    image: image
+    # build:
+    #   context: ./app
+    #   dockerfile: ./Dockerfile
     deploy:
-      replicas: 3
+      replicas: 4
   nginx:
     image: nginx:alpine
     container_name: nginx
